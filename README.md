@@ -1,0 +1,2 @@
+# LeltarProgramMaui
+Leltár mintaalkalmazás készítése
