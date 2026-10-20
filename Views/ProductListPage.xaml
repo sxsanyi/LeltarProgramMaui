@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:LeltarKezelo.ViewModels"
+             xmlns:models="clr-namespace:LeltarKezelo.Models"
+             x:Class="LeltarKezelo.Views.ProductListPage"
+             x:DataType="vm:ProductListViewModel"
+             Title="Leltár">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+ Új termék" Command="{Binding AddProductCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <SearchBar Grid.Row="0"
+                   Margin="8,8,8,0"
+                   Placeholder="Keresés név vagy vonalkód alapján"
+                   Text="{Binding SearchText}" />
+
+        <Grid Grid.Row="1" Padding="16,4" ColumnDefinitions="*,Auto">
+            <Label Text="{Binding TotalCount, StringFormat='{0:N0} termék'}"
+                   Style="{StaticResource SecondaryText}"
+                   VerticalOptions="Center" />
+            <ActivityIndicator Grid.Column="1"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"
+                               HeightRequest="18"
+                               WidthRequest="18" />
+        </Grid>
+
+        <RefreshView Grid.Row="2"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+
+            <!-- Virtualizált lista + lapozott betöltés: a végéhez közeledve tölti a következő oldalt. -->
+            <CollectionView ItemsSource="{Binding Products}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedProduct}"
+                            ItemSizingStrategy="MeasureFirstItem"
+                            RemainingItemsThreshold="15"
+                            RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout Padding="24" Spacing="4" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="Nincs találat" FontSize="18" HorizontalTextAlignment="Center" />
+                        <Label Text="Próbálj más keresőkifejezést, vagy vegyél fel új terméket."
+                               Style="{StaticResource SecondaryText}"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Product">
+                        <Grid ColumnDefinitions="4,*,Auto"
+                              RowDefinitions="Auto,Auto,1"
+                              ColumnSpacing="12"
+                              RowSpacing="2">
+                            <Grid.Triggers>
+                                <DataTrigger TargetType="Grid" Binding="{Binding IsOutOfStock}" Value="True">
+                                    <Setter Property="BackgroundColor"
+                                            Value="{AppThemeBinding Light={StaticResource OutOfStockBackgroundLight}, Dark={StaticResource OutOfStockBackgroundDark}}" />
+                                </DataTrigger>
+                            </Grid.Triggers>
+
+                            <!-- Bal oldali piros sáv a készlethiányos termékeknél -->
+                            <BoxView Grid.RowSpan="2"
+                                     Color="{StaticResource DangerColor}"
+                                     IsVisible="{Binding IsOutOfStock}" />
+
+                            <Label Grid.Column="1"
+                                   Margin="0,10,0,0"
+                                   Text="{Binding Name}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="TailTruncation">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsOutOfStock}" Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Light={StaticResource OutOfStockTextLight}, Dark={StaticResource OutOfStockTextDark}}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   Margin="0,0,0,10"
+                                   Text="{Binding Barcode}"
+                                   Style="{StaticResource SecondaryText}" />
+
+                            <Label Grid.Column="2"
+                                   Margin="0,10,16,0"
+                                   Text="{Binding Quantity, StringFormat='{0:#,0.##} db'}"
+                                   FontAttributes="Bold"
+                                   HorizontalTextAlignment="End">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsOutOfStock}" Value="True">
+                                        <Setter Property="TextColor"
+                                                Value="{AppThemeBinding Light={StaticResource OutOfStockTextLight}, Dark={StaticResource OutOfStockTextDark}}" />                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="2"
+                                   Margin="0,0,16,10"
+                                   Text="{Binding Price, StringFormat='{0:#,0.##} Ft'}"
+                                   Style="{StaticResource SecondaryText}"
+                                   HorizontalTextAlignment="End" />
+
+                            <BoxView Grid.Row="2"
+                                     Grid.ColumnSpan="3"
+                                     Color="{AppThemeBinding Light={StaticResource SeparatorLight}, Dark={StaticResource SeparatorDark}}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Az alkalmazás saját stílusai. A sablon Colors.xaml / Styles.xaml fájljait nem módosítjuk. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Color x:Key="OutOfStockTextLight">#C62828</Color>
+    <Color x:Key="OutOfStockTextDark">#FF8A80</Color>
+    <Color x:Key="OutOfStockBackgroundLight">#FDECEA</Color>
+    <Color x:Key="OutOfStockBackgroundDark">#3A1F1F</Color>
+    <Color x:Key="SecondaryTextLight">#616161</Color>
+    <Color x:Key="SecondaryTextDark">#BDBDBD</Color>
+    <Color x:Key="SeparatorLight">#E0E0E0</Color>
+    <Color x:Key="SeparatorDark">#424242</Color>
+    <Color x:Key="DangerColor">#C62828</Color>
+
+    <Style x:Key="SecondaryText" TargetType="Label">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource SecondaryTextLight}, Dark={StaticResource SecondaryTextDark}}" />
+    </Style>
+
+    <Style x:Key="FieldLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Margin" Value="0,12,0,2" />
+    </Style>
+
+    <Style x:Key="ErrorLabel" TargetType="Label">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" Value="{StaticResource DangerColor}" />
+    </Style>
+
+    <Style x:Key="OutOfStockBadge" TargetType="Border">
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Padding" Value="10,4" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource OutOfStockBackgroundLight}, Dark={StaticResource OutOfStockBackgroundDark}}" />
+    </Style>
+
+    <Style x:Key="DangerButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource DangerColor}" />
+        <Setter Property="BorderColor" Value="{StaticResource DangerColor}" />
+        <Setter Property="BorderWidth" Value="1" />
+    </Style>
+
+    <Style x:Key="SecondaryButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource SecondaryTextLight}, Dark={StaticResource SecondaryTextDark}}" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource SeparatorLight}, Dark={StaticResource SeparatorDark}}" />
+        <Setter Property="BorderWidth" Value="1" />
+    </Style>
+</ResourceDictionary>

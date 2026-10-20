@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:LeltarKezelo.ViewModels"
+             xmlns:controls="clr-namespace:LeltarKezelo.Views.Controls"
+             x:Class="LeltarKezelo.Views.ProductDetailPage"
+             x:DataType="vm:ProductDetailViewModel"
+             Title="{Binding Title}">
+
+    <Grid>
+        <ScrollView IsVisible="{Binding IsLoaded}">
+            <VerticalStackLayout Padding="16" Spacing="8">
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="{Binding ProductId, StringFormat='Azonosító: #{0}'}"
+                           Style="{StaticResource SecondaryText}"
+                           VerticalOptions="Center" />
+                    <Border Grid.Column="1"
+                            Style="{StaticResource OutOfStockBadge}"
+                            IsVisible="{Binding IsOutOfStock}">
+                        <Label Text="Nincs készleten"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource OutOfStockTextLight}, Dark={StaticResource OutOfStockTextDark}}" />
+                    </Border>
+                </Grid>
+
+                <controls:ProductFormView />
+
+                <Button Margin="0,20,0,0"
+                        Text="Módosítások mentése"
+                        Command="{Binding SaveCommand}" />
+
+                <Button Text="Termék törlése"
+                        Style="{StaticResource DangerButton}"
+                        Command="{Binding DeleteCommand}" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+    </Grid>
+</ContentPage>

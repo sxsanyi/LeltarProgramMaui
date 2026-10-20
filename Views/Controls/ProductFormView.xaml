@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Közös űrlap a felvételi és a részletező oldalhoz. A BindingContext-et az oldaltól örökli. -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:LeltarKezelo.ViewModels"
+             x:Class="LeltarKezelo.Views.Controls.ProductFormView"
+             x:DataType="vm:ProductFormViewModel">
+
+    <VerticalStackLayout Spacing="2">
+
+        <Label Text="Terméknév" Style="{StaticResource FieldLabel}" />
+        <Entry Text="{Binding Name}"
+               Placeholder="pl. Gála alma ládás 30kg"
+               MaxLength="200"
+               IsEnabled="{Binding IsNotBusy}" />
+        <Label Text="{Binding NameError}"
+               Style="{StaticResource ErrorLabel}"
+               IsVisible="{Binding NameError, Converter={StaticResource StringNotEmpty}}" />
+
+        <Label Text="Vonalkód" Style="{StaticResource FieldLabel}" />
+        <Entry Text="{Binding Barcode}"
+               Placeholder="pl. 5901234567890"
+               MaxLength="64"
+               IsEnabled="{Binding IsNotBusy}" />
+        <Label Text="{Binding BarcodeError}"
+               Style="{StaticResource ErrorLabel}"
+               IsVisible="{Binding BarcodeError, Converter={StaticResource StringNotEmpty}}" />
+
+        <Label Text="Ár (Ft)" Style="{StaticResource FieldLabel}" />
+        <Entry Text="{Binding Price}"
+               Placeholder="pl. 600"
+               Keyboard="Numeric"
+               IsEnabled="{Binding IsNotBusy}" />
+        <Label Text="{Binding PriceError}"
+               Style="{StaticResource ErrorLabel}"
+               IsVisible="{Binding PriceError, Converter={StaticResource StringNotEmpty}}" />
+
+        <Label Text="Készletmennyiség" Style="{StaticResource FieldLabel}" />
+        <Entry Text="{Binding Quantity}"
+               Placeholder="pl. 5"
+               Keyboard="Numeric"
+               IsEnabled="{Binding IsNotBusy}" />
+        <Label Text="{Binding QuantityError}"
+               Style="{StaticResource ErrorLabel}"
+               IsVisible="{Binding QuantityError, Converter={StaticResource StringNotEmpty}}" />
+
+    </VerticalStackLayout>
+</ContentView>
